@@ -1,11 +1,14 @@
-import { render, fireEvent, screen } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
+import { render, screen } from '@testing-library/react';
 import App from './App';
-import BookingForm from "./components/BookingForm";
+import Main from "./components/Main";
 
 
-test( 'Renders the BookingForm heading', () =>{
+test( 'Renders the BookingPage heading', () => {
   render(
-      <BookingForm />
+    <MemoryRouter initialEntries={['/booking']}>
+      <Main />
+    </MemoryRouter>
   );
   const headingElement = screen.getByText("Book Now");
   expect(headingElement).toBeInTheDocument();
