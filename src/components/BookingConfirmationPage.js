@@ -1,14 +1,10 @@
 import React from 'react';
 import '../App.css';
-import BookingForm from './BookingForm'
 
 
-const BookingPage = (props) => {
-
-  //    useEffect( () => { console.log( props.availableTimes ); }, [] );
-
-  return (
-    <>  {/* React.Fragment */}
+const ConfirmedBooking = (props) => {
+    return (
+        <>  {/* React.Fragment */}
       <main className='main'>
         <section className={`hero-section`}>
           <article className={`hero-article`}>
@@ -25,15 +21,12 @@ const BookingPage = (props) => {
           </article>
         </section>
 
-        <section className='section'>
-          <BookingForm 
-            availableTimes={props.availableTimes} 
-            onUpdateTimes={props.onUpdateTimes} 
-            onSubmitForm={props.onSubmitForm} />
+        <section>
+            <h1>Booking Confirmed</h1>
         </section>
       </main>
-    </>
-  );
+        </>
+    );
 };
 
-export default BookingPage;
+export default ConfirmedBooking;
