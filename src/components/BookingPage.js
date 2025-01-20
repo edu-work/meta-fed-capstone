@@ -26,10 +26,13 @@ const BookingPage = (props) => {
         </section>
 
         <section className='section'>
-          <BookingForm 
-            availableTimes={props.availableTimes} 
-            onUpdateTimes={props.onUpdateTimes} 
-            onSubmitForm={props.onSubmitForm} />
+          <article className='main-article'>
+            <h1>Book Now</h1>
+            <BookingForm
+              availableTimes={props.availableTimes}
+              onUpdateTimes={props.onUpdateTimes}
+              onSubmitForm={props.onSubmitForm} />
+          </article>
         </section>
       </main>
     </>

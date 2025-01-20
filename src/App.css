@@ -11,6 +11,7 @@
   --secondary-color-2: #FBDABB;
   --highlight-color-1: #EDEFEE;
   --highlight-color-2: #333333;
+  --medium-weight: 500;
 
   --font-family-serif: 'Markazi Text', 'Times New Roman', Georgia, serif;
   --font-family-sans-serif: 'Karla', Arial, Helvetica, sans-serif;
@@ -46,6 +47,64 @@ p {
   font-size: 18px;
   font-weight: normal;
   margin-top: 10px;
+}
+
+.error-message {
+  font-family: var(--font-family-san-serif);
+  color: darkred;
+  font-size: 18px;
+  font-weight: normal;
+  margin: 0;
+}
+
+.button {
+  margin: 15px 0px;
+  border-radius: 16px; /* Rounded corners */
+  background-color: var(--primary-color-2);
+  color: black; 
+  font-family: var(--font-family-san-serif);
+  font-size: 18px;
+  font-weight: 500;
+  cursor: pointer;
+  border: 1px solid var(--highlight-color-2);
+}
+
+.button:hover {
+  color: white;
+  background-color: var(--primary-color-1)
+}
+
+.button:disabled {
+  color: var(--highlight-color-2);
+  background-color: var(--highlight-color-1);
+}
+
+.button-content {
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 15px;
+}
+
+input, select {
+  padding: 5px 10px;
+  border-radius: 16px; /* Rounded corners */
+  background-color: var(--highlight-color-1);
+  color: black; 
+  font-family: var(--font-family-san-serif);
+  font-size: 18px;
+  font-weight: 500;
+  border: 1px solid var(--highlight-color-2);
+}
+
+input:focus {
+  border: 2px solid var(--primary-color-1);
+}
+
+input:invalid {
+  border: 2px solid darkred;
 }
 
 /* Header Styles */
@@ -153,15 +212,28 @@ p {
   object-fit: cover;
 }
 
+.main-article {
+  grid-column: 1 / -1;
+  display: grid;
+  place-items: center;
+}
+
+.form-container {
+  display: grid;
+  margin: 15px 0px;
+  max-width: 250px;
+  grid-gap: 15px;
+}
+
 /* Footer Styles */
 
 .footer {
   display: grid;
   grid-template-columns: repeat(12, 1fr);
-  grid-gap: 10px;
-  padding: 10px;
-  background-color: #333;
-  color: #fff;
+  grid-gap: 20px;
+  padding: 20px;
+  background-color: var(--hightlight-color-1);
+  color: var(--highlight-color-2);
 }
 
 

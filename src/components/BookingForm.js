@@ -1,65 +1,121 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup'
 import '../App.css';
+import { getTodaysDate, setDateZeroHour } from '../utils/common';
 
-function getTodaysDate() {
-    const today = new Date();
-    const year = today.getFullYear();
-    const month = String(today.getMonth() + 1).padStart(2, '0'); // January is 0
-    const day = String(today.getDate()).padStart(2, '0');
-  
-    return `${year}-${month}-${day}`;
-  }
 
-const AvailableTimes = (props) => {
-    return (
-        props.availableTimes.map((availableTime, index) => {
-            return (<option key={index}>{availableTime}</option>);
-        })
-    )
-}
+const validationSchema = yup.object({
+  reserveDate: yup.date()
+    .min(setDateZeroHour(new Date()), `Reservation Date must be ${getTodaysDate()} or later`)
+    .required('Reservation Date is required')
+    .typeError('Select a valid date'),
+  reserveTime: yup.string()
+    .required('Reservation Time is required'),
+  guests: yup.number()
+    .positive().integer()
+    .min(1, 'At least 1 guest for reservation')
+    .max(10, 'Guests must not exceed 10')
+    .required('Number of guests is required')
+    .typeError('Enter Guests between 1 and 10'),
+  occasion: yup.string()
+    .required('An occasion is required')
+}).required();
+
 
 const BookingForm = (props) => {
-    const [inputs, setInputs] = useState({'res-date': getTodaysDate(), 'res-time': props.availableTimes[0], guests: 1, occasion: 'Birthday'});
-
-    const handleChange = (event) => {
-        const id = event.target.id;
-        //        const name = event.target.name;
-        const value = event.target.value;
-        setInputs(values => ({ ...values, [id]: value }));
+  const { register, handleSubmit, watch, reset, formState: { errors } } = useForm({
+    resolver: yupResolver(validationSchema),
+    mode: 'onChange',
+    defaultValues: {
+      reserveDate: getTodaysDate(),
+      reserveTime: '',
+      guests: 1,
+      occasion: 'None'
     }
+  });
+  const [options, setOptions] = useState(props.availableTimes);
+  const lastReserveDate = useRef(null);
 
-    const handleDate = (event) => {
-        handleChange(event);
-        props.onUpdateTimes(event);
+  const onUpdateTimes = props.onUpdateTimes;
+
+  const watchReserveDate = watch("reserveDate");
+  //  const watchReserveTime = watch("reserveTime");
+  //  const watchGuests = watch("guests");
+  //  const watchOccasion = watch("occasion");
+
+  useEffect(() => {
+    const fetchTimes = () => {
+      if (watchReserveDate !== lastReserveDate.current) {
+//        console.log(`Fetch Watch Date: ${watchReserveDate}`)
+        lastReserveDate.current = watchReserveDate;
+        onUpdateTimes({ target: { value: watchReserveDate } });
+      }
+    };
+
+    fetchTimes();
+  }, [watchReserveDate, onUpdateTimes]);
+
+  useEffect(() => {
+    if (JSON.stringify(props.availableTimes) !== JSON.stringify(options)) {
+//      console.log(`Set Options`)
+      setOptions(props.availableTimes);
     }
+  }, [props.availableTimes, options]);
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        alert(`${JSON.stringify(inputs)}`);
-        props.onSubmitForm(inputs);
-    }
+  const onSubmit = (data) => {
+    //    alert(`${JSON.stringify(inputs)}`);
+    props.onSubmitForm(data);
+    reset();
+  }
 
-    return (
-        <>
-            <h2>Book Now</h2>
-            <form style={{ display: "grid", maxWidth: "200px", gap: "20px" }} onSubmit={handleSubmit}>
-                <label htmlFor="res-date">Choose date</label>
-                <input type="date" id="res-date" value={inputs['res-date']} onChange={handleDate} />
-                <label htmlFor="res-time">Choose time</label>
-                <select id="res-time" value={inputs['res-time']} onChange={handleChange}>
-                    <AvailableTimes availableTimes={props.availableTimes} />
-                </select>
-                <label htmlFor="guests">Number of guests</label>
-                <input type="number" placeholder="1" min="1" max="10" id="guests" value={inputs.guests} onChange={handleChange} />
-                <label htmlFor="occasion">Occasion</label>
-                <select id="occasion" value={inputs.occasion} onChange={handleChange}>
-                    <option>Birthday</option>
-                    <option>Anniversary</option>
-                </select>
-                <input type="submit" value="Make Your reservation" />
-            </form>
-        </>
-    )
+  const hasAvailabilty = props.availableTimes && props.availableTimes.length !== 0;
+  const isDisabled = !hasAvailabilty;
+
+  return (
+    <>
+      <form className="form-container" onSubmit={handleSubmit(onSubmit)} >
+        <label htmlFor="reserveDate">Choose date</label>
+        <input {...register("reserveDate")} type="date" id="reserveDate" name="reserveDate" />
+        {errors?.reserveDate && <p className="error-message">{errors.reserveDate?.message}</p>}
+        {/*         <p className="error-message">{watchReserveDate}</p>  */}
+
+        {hasAvailabilty ? (
+          <>
+            <label htmlFor="reserveTime">Choose time</label>
+            <select {...register("reserveTime")} id="reserveTime" name="reserveTime">
+              <option disabled value="">select time</option>
+              {options.map((time) => (
+                <option key={time} value={time}>{time}</option>
+              ))}
+              {/*
+              {props.availableTimes.map((time) => (
+                <option key={time} value={time}>{time}</option>
+              ))}
+              */}
+            </select>
+            {errors?.reserveTime && <p className="error-message">{errors.reserveTime?.message}</p>}
+          </>
+        ) : <p className="error-message">Sorry, there are no table reservations available</p>}
+
+        <label htmlFor="guests">Number of guests</label>
+        <input {...register("guests")} type="number" placeholder="1" min="1" max="10" id="guests" name="guests" />
+        {errors?.guests && <p className="error-message">{errors.guests?.message}</p>}
+        {/*        <p className="error-message">{watchGuests}</p> */}
+
+        <label htmlFor="occasion">Occasion</label>
+        <select {...register("occasion")} id="occasion" name="occasion">
+          <option>None</option>
+          <option>Birthday</option>
+          <option>Anniversary</option>
+        </select>
+        {errors?.occasion && <p className="error-message">{errors.occasion?.message}</p>}
+
+        <button className="button button-content" type="submit" aria-label="Submit Reservation" disabled={isDisabled}>Make Your Reservation</button>
+      </form>
+    </>
+  )
 }
 
 export default BookingForm;

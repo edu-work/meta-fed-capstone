@@ -4,20 +4,41 @@ import Homepage from "./Homepage";
 import BookingPage from "./BookingPage";
 import ConfirmedBooking from "./BookingConfirmationPage";
 import * as utils from '../utils/booking-api';
+import { getTimeString, getDateZeroHour, setDateZeroHour } from '../utils/common';
+
+
+export const getOpenReservations = (reservationDate) => {
+  const todaysDate = new Date();
+  const todayZeroHour = setDateZeroHour( new Date( todaysDate ) );
+  let availability = [];
+
+//  console.log(`Reservation Date: ${reservationDate}`)
+
+  if( reservationDate >= todayZeroHour ) {
+    availability = utils.fetchAPI(reservationDate);
+//    console.log( `Reservation Date: ${reservationDate},  Today's Date: ${todayZeroHour}` );
+
+    if( reservationDate.toISOString() === todayZeroHour.toISOString() ) {
+      const currentTime = getTimeString( todaysDate );
+//      console.log( `Current Time: ${currentTime}` );
+      availability = availability.filter( (availableTime) => availableTime > currentTime);
+    }
+  }
+
+  return( availability );
+}
 
 export const initializeTimes = () => {
-  return (utils.fetchAPI(new Date()));
-//  return (window.fetchAPI(new Date()));
-  //  return (["17:00", "18:00", "19:00", "20:00", "21:00", "22:00"]);
+  const todaysDate = setDateZeroHour( new Date() );
+  return( getOpenReservations(todaysDate) );
 }
 
 export const updateTimes = (state, action) => {
   switch (action.type) {
     case 'check_availability':
-      const availability = utils.fetchAPI(new Date(action.reservationDate));
-//      const availability = window.fetchAPI(new Date(action.reservationDate));
-      console.log(`Action: ${JSON.stringify(action)}  Date: ${action.reservationDate}  Availability: ${availability}`)
-      return availability; // initializeTimes();
+      const availability = getOpenReservations( getDateZeroHour( action.reservationDate ) );
+//      console.log(`Action: ${JSON.stringify(action)}  Date: ${action.reservationDate}  Availability: ${availability}`)
+      return availability;
     default:
       return ([...state]);
   }
@@ -28,6 +49,7 @@ const Main = () => {
   const [availableTimes, dispatch] = useReducer(updateTimes, [], initializeTimes);
 
   const handleReservationDate = (e) => {
+//    console.log(`Calling Dispatch`);
     dispatch({ type: 'check_availability', reservationDate: e.target.value });
   }
 
@@ -38,12 +60,6 @@ const Main = () => {
       navigate( "/confirmedbooking" );
     }
   }
-
-  /*
-    useEffect( () => {
-      console.log( window.fetchAPI(new Date()) );
-    }, []);
-  */
 
   return (
     <>
