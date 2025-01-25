@@ -27,7 +27,7 @@ const BookingPage = (props) => {
 
         <section className='section'>
           <article className='main-article'>
-            <h1>Book Now</h1>
+            <h2 className="display-title">Book Now</h2>
             <BookingForm
               availableTimes={props.availableTimes}
               onUpdateTimes={props.onUpdateTimes}

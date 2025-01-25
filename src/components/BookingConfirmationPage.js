@@ -1,10 +1,15 @@
 import React from 'react';
+import { useLocation } from 'react-router-dom';
 import '../App.css';
+import { getDateString } from '../utils/common';
 
 
-const ConfirmedBooking = (props) => {
-    return (
-        <>  {/* React.Fragment */}
+const ConfirmedBooking = (props, reservation) => {
+  const location = useLocation();
+  const formData = location.state;
+
+  return (
+    <>  {/* React.Fragment */}
       <main className='main'>
         <section className={`hero-section`}>
           <article className={`hero-article`}>
@@ -21,12 +26,28 @@ const ConfirmedBooking = (props) => {
           </article>
         </section>
 
-        <section>
-            <h1>Booking Confirmed</h1>
+        <section className="section">
+          <article className='main-article'>
+            <h2 className="display-title">Booking Confirmed</h2>
+            <div className="confirmation-copy">
+              <p className="display-title">
+                <span className="section-title">Reservation Date:</span> {getDateString(formData.reserveDate)}
+              </p>
+              <p className="display-title">
+                <span className="section-title">Reservation Time:</span> {formData.reserveTime}
+              </p>
+              <p className="display-title">
+                <span className="section-title">Guests:</span> {formData.guests}
+              </p>
+              <p className="display-title">
+                <span className="section-title">Occasion:</span> {formData.occasion}
+              </p>
+            </div>
+          </article>
         </section>
       </main>
-        </>
-    );
+    </>
+  );
 };
 
 export default ConfirmedBooking;

@@ -30,7 +30,7 @@ const BookingForm = (props) => {
     mode: 'onChange',
     defaultValues: {
       reserveDate: getTodaysDate(),
-      reserveTime: '',
+//      reserveTime: '',
       guests: 1,
       occasion: 'None'
     }
@@ -71,21 +71,21 @@ const BookingForm = (props) => {
   }
 
   const hasAvailabilty = props.availableTimes && props.availableTimes.length !== 0;
-  const isDisabled = !hasAvailabilty;
+  const isDisabled = !hasAvailabilty || (Object.keys(errors).length > 0);
 
   return (
     <>
       <form className="form-container" onSubmit={handleSubmit(onSubmit)} >
-        <label htmlFor="reserveDate">Choose date</label>
+        <label htmlFor="reserveDate" className="section-title">Choose date</label>
         <input {...register("reserveDate")} type="date" id="reserveDate" name="reserveDate" />
         {errors?.reserveDate && <p className="error-message">{errors.reserveDate?.message}</p>}
         {/*         <p className="error-message">{watchReserveDate}</p>  */}
 
         {hasAvailabilty ? (
           <>
-            <label htmlFor="reserveTime">Choose time</label>
+            <label htmlFor="reserveTime" className="section-title">Choose time</label>
             <select {...register("reserveTime")} id="reserveTime" name="reserveTime">
-              <option disabled value="">select time</option>
+              {/* <option disabled value="">select time</option> */}
               {options.map((time) => (
                 <option key={time} value={time}>{time}</option>
               ))}
@@ -99,12 +99,12 @@ const BookingForm = (props) => {
           </>
         ) : <p className="error-message">Sorry, there are no table reservations available</p>}
 
-        <label htmlFor="guests">Number of guests</label>
+        <label htmlFor="guests" className="section-title">Number of guests</label>
         <input {...register("guests")} type="number" placeholder="1" min="1" max="10" id="guests" name="guests" />
         {errors?.guests && <p className="error-message">{errors.guests?.message}</p>}
         {/*        <p className="error-message">{watchGuests}</p> */}
 
-        <label htmlFor="occasion">Occasion</label>
+        <label htmlFor="occasion" className="section-title">Occasion</label>
         <select {...register("occasion")} id="occasion" name="occasion">
           <option>None</option>
           <option>Birthday</option>
