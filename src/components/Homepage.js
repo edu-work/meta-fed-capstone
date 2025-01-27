@@ -11,13 +11,13 @@ const ReservationButton = ({ children, ...props }) => {
     navigate('/booking');
   }
 
-  return(
+  return (
     <DefaultButton onClick={handleClick}>Reserve a Table</DefaultButton>
   );
 }
 
 const Homepage = () => {
-    return (
+  return (
     <main className='main'>
       <section className={`hero-section`}>
         <article className={`hero-article`}>
@@ -31,7 +31,7 @@ const Homepage = () => {
               <ReservationButton />
             </div>
           </div>
-          <img className='hero-image' src={require('../images/restaurantfood.jpg')} alt="Little Lemon food" />
+          <img className="hero-image" src={require('../images/restaurantfood.jpg')} alt="Little Lemon food" />
         </article>
       </section>
 

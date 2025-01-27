@@ -17,7 +17,7 @@ const BookingPage = (props) => {
                 <h1>Little Lemon</h1>
                 <h2>Table Reservation - Chicago</h2>
                 <p>
-                  We are a family owned Mediterranean restaurant, focused on traditional recipes served with a modern twist.
+                  Find a table for any occasion.
                 </p>
               </div>
             </div>
