@@ -77,14 +77,14 @@ const BookingForm = (props) => {
     <>
       <form className="form-container" onSubmit={handleSubmit(onSubmit)} >
         <label htmlFor="reserveDate" className="section-title">Choose date</label>
-        <input {...register("reserveDate")} type="date" id="reserveDate" name="reserveDate" />
+        <input {...register("reserveDate")} type="date" id="reserveDate" name="reserveDate" aria-label="Select Reservation Date"/>
         {errors?.reserveDate && <p className="error-message">{errors.reserveDate?.message}</p>}
         {/*         <p className="error-message">{watchReserveDate}</p>  */}
 
         {hasAvailabilty ? (
           <>
             <label htmlFor="reserveTime" className="section-title">Choose time</label>
-            <select {...register("reserveTime")} id="reserveTime" name="reserveTime">
+            <select {...register("reserveTime")} id="reserveTime" name="reserveTime" aria-label="Select Reservation Time" >
               {/* <option disabled value="">select time</option> */}
               {options.map((time) => (
                 <option key={time} value={time}>{time}</option>
@@ -100,12 +100,12 @@ const BookingForm = (props) => {
         ) : <p className="error-message">Sorry, there are no table reservations available</p>}
 
         <label htmlFor="guests" className="section-title">Number of guests</label>
-        <input {...register("guests")} type="number" placeholder="1" min="1" max="10" id="guests" name="guests" />
+        <input {...register("guests")} type="number" placeholder="1" min="1" max="10" id="guests" name="guests" aria-label="Enter Number of Guests" />
         {errors?.guests && <p className="error-message">{errors.guests?.message}</p>}
         {/*        <p className="error-message">{watchGuests}</p> */}
 
         <label htmlFor="occasion" className="section-title">Occasion</label>
-        <select {...register("occasion")} id="occasion" name="occasion">
+        <select {...register("occasion")} id="occasion" name="occasion" aria-label="Select Occasion">
           <option>None</option>
           <option>Birthday</option>
           <option>Anniversary</option>
