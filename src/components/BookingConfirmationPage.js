@@ -17,9 +17,7 @@ const ConfirmedBooking = (props, reservation) => {
               <div className={`hero-copy`}>
                 <h1>Little Lemon</h1>
                 <h2>Table Reservation - Chicago</h2>
-                <p>
-                  We are a family owned Mediterranean restaurant, focused on traditional recipes served with a modern twist.
-                </p>
+                <p>Thank you and we look forward to your visit.</p>
               </div>
             </div>
             <img className={`hero-image`} src={require('../images/restaurant-guests.jpg')} alt="Little Lemon guests" />

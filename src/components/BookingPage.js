@@ -16,9 +16,7 @@ const BookingPage = (props) => {
               <div className={`hero-copy`}>
                 <h1>Little Lemon</h1>
                 <h2>Table Reservation - Chicago</h2>
-                <p>
-                  Find a table for any occasion.
-                </p>
+                <p>Find a table for any occasion.</p>
               </div>
             </div>
             <img className={`hero-image`} src={require('../images/restaurant-guests.jpg')} alt="Little Lemon guests" />
