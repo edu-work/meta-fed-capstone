@@ -114,11 +114,18 @@ describe("Reservation Form", () => {
 
 
   test("Valid form submission", async () => {
+    const tomorrowsDate = setDateZeroHour(new Date());  // Date must start at midnight (12am, 00:00)
+    tomorrowsDate.setDate(tomorrowsDate.getDate() + 1);
+    const availableTimes = updateTimes([], { type: 'check_availability', reservationDate: getDateString(tomorrowsDate) });
+    const handleUpdate = jest.fn();
+    const handleSubmit = jest.fn();
+
+/*
     let availableTimes = initializeTimes();
     const handleUpdate = (e) => {
       availableTimes = updateTimes(availableTimes, { action: { type: 'check_availability', reservationDate: e.target.value } })
     }
-    const handleSubmit = jest.fn();
+ */
 
     render(
       <MemoryRouter initialEntries={['/booking']}>

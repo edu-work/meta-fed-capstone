@@ -77,7 +77,7 @@ const BookingForm = (props) => {
     <>
       <form className="form-container" onSubmit={handleSubmit(onSubmit)} >
         <label htmlFor="reserveDate" className="section-title">Choose date</label>
-        <input {...register("reserveDate")} type="date" id="reserveDate" name="reserveDate" aria-label="Select Reservation Date"/>
+        <input {...register("reserveDate")} type="date" id="reserveDate" name="reserveDate" aria-label="Select Reservation Date" min={getTodaysDate()}/>
         {errors?.reserveDate && <p className="error-message">{errors.reserveDate?.message}</p>}
         {/*         <p className="error-message">{watchReserveDate}</p>  */}
 
